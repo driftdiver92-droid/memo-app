@@ -177,8 +177,9 @@
     <li><a href="#sec3">事前準備でやったこと</a></li>
     <li><a href="#sec4">実際の操作と解説</a></li>
     <li><a href="#sec5">今後よく使うコマンド一覧</a></li>
-    <li><a href="#sec6">よくある質問</a></li>
-    <li><a href="#sec7">用語集</a></li>
+    <li><a href="#sec6">GitHub Pages — HTMLをWebページとして公開する</a></li>
+    <li><a href="#sec7">よくある質問</a></li>
+    <li><a href="#sec8">用語集</a></li>
   </ol>
 </div>
 
@@ -492,9 +493,113 @@ git push</code></pre>
   <p>A: 個人プロジェクトなら日本語でOKです。チーム開発やオープンソースでは英語が一般的です。</p>
 </div>
 
-<!-- ==================== 7. 用語集 ==================== -->
+<!-- ==================== 6. GitHub Pages ==================== -->
+<div class="section" id="sec6">
+  <h2>6. GitHub Pages — HTMLをWebページとして公開する</h2>
+
+  <h3>問題：GitHubではHTMLがソースコードとして表示される</h3>
+  <p>
+    GitHub にHTMLファイルをアップしても、ブラウザのようにきれいに表示されません。<br>
+    GitHub はHTMLを「コードファイル」として扱うので、タグやCSSがそのまま文字として表示されてしまいます。
+  </p>
+
+  <div class="compare">
+    <div class="bad">
+      <h4>github.com で見た場合</h4>
+      ソースコードがそのまま表示される<br>
+      &lt;h1&gt;メモアプリ&lt;/h1&gt;<br>
+      &lt;p&gt;説明文...&lt;/p&gt;<br>
+      → 読みにくい…
+    </div>
+    <div class="good">
+      <h4>GitHub Pages で見た場合</h4>
+      普通のWebページとして表示される<br><br>
+      <strong style="font-size:16px">メモアプリ</strong><br>
+      説明文...<br>
+      → 読みやすい！
+    </div>
+  </div>
+
+  <h3>解決策：GitHub Pages を有効にする</h3>
+  <p><strong>GitHub Pages</strong> は、リポジトリのHTMLファイルを普通のWebサイトとして無料で公開してくれる機能です。</p>
+
+  <pre><code># GitHub Pages を有効にするコマンド
+gh api repos/ユーザー名/リポジトリ名/pages \
+  --method POST --input - &lt;&lt;'EOF'
+{"source":{"branch":"main","path":"/"}}
+EOF</code></pre>
+
+  <table>
+    <tr><th>部分</th><th>意味</th></tr>
+    <tr><td><code>gh api</code></td><td>GitHub の API を呼び出す</td></tr>
+    <tr><td><code>repos/ユーザー名/リポジトリ名/pages</code></td><td>Pages の設定を操作する</td></tr>
+    <tr><td><code>--method POST</code></td><td>新しく作成する（有効にする）</td></tr>
+    <tr><td><code>"branch":"main"</code></td><td>main ブランチのファイルを公開する</td></tr>
+    <tr><td><code>"path":"/"</code></td><td>リポジトリのルート（一番上）から公開する</td></tr>
+  </table>
+
+  <h3>URLの違い</h3>
+  <table>
+    <tr><th>見方</th><th>URL の形</th><th>表示</th></tr>
+    <tr>
+      <td>ソースコード</td>
+      <td><code>github.com/ユーザー名/リポジトリ名</code></td>
+      <td>コードがそのまま表示</td>
+    </tr>
+    <tr>
+      <td>Webページ</td>
+      <td><code>ユーザー名.github.io/リポジトリ名</code></td>
+      <td>ブラウザで見るのと同じ表示</td>
+    </tr>
+  </table>
+
+  <div class="point">
+    <strong>今回の場合：</strong><br>
+    ソースコード → <code>github.com/driftdiver92-droid/memo-app</code><br>
+    Webページ → <code>driftdiver92-droid.github.io/memo-app/</code><br><br>
+    GitHub Pages を有効にすると、リポジトリ内のすべてのHTMLファイルがWebページとして閲覧できるようになります。
+    <code>git push</code> するたびに自動で反映されます。
+  </div>
+
+  <div class="warn">
+    <strong>注意：</strong>GitHub Pages は<strong>公開リポジトリ</strong>の場合、誰でもアクセスできるWebサイトになります。
+    パスワードや個人情報を含むファイルはアップしないでください。
+  </div>
+</div>
+
+<!-- ==================== 7. よくある質問 ==================== -->
 <div class="section" id="sec7">
-  <h2>7. 用語集</h2>
+  <h2>7. よくある質問</h2>
+
+  <h3>Q: add と commit を毎回やるのは面倒。まとめてできない？</h3>
+  <p>A: できます。でも分けたほうが安全です。</p>
+  <pre><code># 全ファイルを一括で add + commit する方法
+git add -A && git commit -m "メッセージ"</code></pre>
+  <div class="warn">
+    <strong>注意：</strong><code>-A</code> は全ファイルを対象にするので、
+    間違えてパスワードファイルなどをアップしてしまう危険があります。
+    慣れるまではファイル名を指定する方法がおすすめです。
+  </div>
+
+  <h3>Q: 間違えて commit したら取り消せる？</h3>
+  <p>A: 直前の commit なら取り消せます。</p>
+  <pre><code># 直前の commit を取り消す（ファイルの変更は残る）
+git reset --soft HEAD~1</code></pre>
+
+  <h3>Q: push した後に間違いに気づいたら？</h3>
+  <p>A: 新しい commit で修正するのが安全です。</p>
+  <pre><code># 間違いを修正して…
+git add 修正したファイル
+git commit -m "fix: ○○を修正"
+git push</code></pre>
+
+  <h3>Q: commit メッセージは日本語でいい？</h3>
+  <p>A: 個人プロジェクトなら日本語でOKです。チーム開発やオープンソースでは英語が一般的です。</p>
+</div>
+
+<!-- ==================== 8. 用語集 ==================== -->
+<div class="section" id="sec8">
+  <h2>8. 用語集</h2>
   <table>
     <tr><th>用語</th><th>読み方</th><th>意味</th></tr>
     <tr><td>リポジトリ (repository)</td><td>リポジトリ</td><td>プロジェクトフォルダ＋変更履歴のセット</td></tr>
@@ -509,6 +614,7 @@ git push</code></pre>
     <tr><td>ローカル (local)</td><td>ローカル</td><td>あなたのPC上のリポジトリ</td></tr>
     <tr><td>diff</td><td>ディフ</td><td>変更前と変更後の差分（違い）</td></tr>
     <tr><td>HEAD</td><td>ヘッド</td><td>今いるセーブポイント（最新の commit）を指す</td></tr>
+    <tr><td>GitHub Pages</td><td>ギットハブ ページズ</td><td>リポジトリのHTMLをWebサイトとして無料公開できる機能</td></tr>
   </table>
 </div>
 
