@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>メモアプリ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- 左側：メモ一覧 -->
+    <div class="sidebar">
+      <h1>メモ一覧</h1>
+      <button id="new-memo-btn">＋ 新規メモ</button>
+      <ul id="memo-list"></ul>
+    </div>
+
+    <!-- 右側：編集フォーム -->
+    <div class="editor">
+      <div id="editor-placeholder">
+        <p>メモを選択するか、新規作成してください</p>
+      </div>
+      <div id="editor-form" style="display: none;">
+        <input type="text" id="memo-title" placeholder="タイトル">
+        <textarea id="memo-body" placeholder="メモの内容を入力..."></textarea>
+        <div class="editor-footer">
+          <span id="memo-updated-at"></span>
+          <div>
+            <button id="delete-btn">削除</button>
+            <button id="save-btn">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
