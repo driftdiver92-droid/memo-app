@@ -178,8 +178,9 @@
     <li><a href="#sec4">実際の操作と解説</a></li>
     <li><a href="#sec5">今後よく使うコマンド一覧</a></li>
     <li><a href="#sec6">GitHub Pages — HTMLをWebページとして公開する</a></li>
-    <li><a href="#sec7">よくある質問</a></li>
-    <li><a href="#sec8">用語集</a></li>
+    <li><a href="#sec7">push と pull — GitHubとの同期を理解する</a></li>
+    <li><a href="#sec8">よくある質問</a></li>
+    <li><a href="#sec9">用語集</a></li>
   </ol>
 </div>
 
@@ -567,9 +568,160 @@ EOF</code></pre>
   </div>
 </div>
 
-<!-- ==================== 7. よくある質問 ==================== -->
+<!-- ==================== 7. push と pull ==================== -->
 <div class="section" id="sec7">
-  <h2>7. よくある質問</h2>
+  <h2>7. push と pull — GitHubとの同期を理解する</h2>
+
+  <h3>push と pull の関係</h3>
+  <p>Git では、コードは<strong>2つの場所</strong>に存在します。この2つを同期させるのが push と pull です。</p>
+
+  <div class="diagram">あなたのPC（ローカル）              GitHub（リモート）
+┌──────────────────┐          ┌──────────────────┐
+│                  │          │                  │
+│  コードの変更     │ ─ push → │  コードの保管庫    │
+│                  │          │                  │
+│  作業する場所     │ ← pull ─ │  共有する場所      │
+│                  │          │                  │
+└──────────────────┘          └──────────────────┘
+
+push = 「PCの変更をGitHubに送る」（アップロード）
+pull = 「GitHubの変更をPCに取り込む」（ダウンロード）</div>
+
+  <h3>いつ使う？</h3>
+  <table>
+    <tr><th>操作</th><th>場面</th><th>たとえると</th></tr>
+    <tr>
+      <td><code>git push</code></td>
+      <td>自分がPCで編集した後、GitHubに反映したいとき</td>
+      <td>自分のノートを共有フォルダにコピーする</td>
+    </tr>
+    <tr>
+      <td><code>git pull</code></td>
+      <td>他の人（または別PC）がGitHubを更新した後、自分のPCに取り込みたいとき</td>
+      <td>共有フォルダの最新版を自分のノートに反映する</td>
+    </tr>
+  </table>
+
+  <h3>実践：pull の体験</h3>
+  <p>実際に行った操作で説明します。</p>
+
+  <p><strong>状況：</strong>GitHubのWeb画面でREADMEに「作者」を追加した。でもPCにはまだ反映されていない。</p>
+
+  <div class="diagram">【pull する前】
+
+  GitHub:  README.md に「作者」あり   ← 新しい（Web画面で編集した）
+  PC:      README.md に「作者」なし   ← 古いまま</div>
+
+  <pre><code># GitHubの変更をPCに取り込む
+git pull</code></pre>
+
+  <div class="diagram">【pull した後】
+
+  GitHub:  README.md に「作者」あり
+  PC:      README.md に「作者」あり   ← GitHubと同じになった！</div>
+
+  <div class="point">
+    <strong>ポイント：</strong><code>git pull</code> は「GitHubにある最新の変更を、PCにダウンロードして反映する」コマンドです。
+    チーム開発では、作業を始める前に <code>git pull</code> で最新状態にするのが基本です。
+  </div>
+
+  <h3>実践：push の体験</h3>
+  <p>今度はPC側でREADMEに「学習資料」のリンクを追加して、GitHubに送りました。</p>
+
+  <div class="diagram">【push する前】
+
+  PC:      README.md に「学習資料」を追加した   ← 新しい
+  GitHub:  README.md に「学習資料」がない       ← 古いまま</div>
+
+  <pre><code># 1. 変更したファイルを選ぶ
+git add README.md
+
+# 2. セーブポイントを作る
+git commit -m "docs: READMEに学習資料のリンクを追加"
+
+# 3. GitHub にアップする
+git push</code></pre>
+
+  <div class="diagram">【push した後】
+
+  PC:      README.md に「学習資料」あり
+  GitHub:  README.md に「学習資料」あり   ← PCと同じになった！</div>
+
+  <div class="point">
+    <strong>ポイント：</strong><code>git push</code> の前には必ず <code>git add</code> → <code>git commit</code> が必要です。<br>
+    commit = PCにセーブ、push = GitHubにアップ、の2段階です。
+  </div>
+
+  <h3>push と pull と commit の違い（まとめ）</h3>
+  <table>
+    <tr><th>コマンド</th><th>やること</th><th>保存先</th><th>必要な場面</th></tr>
+    <tr>
+      <td><code>git commit</code></td>
+      <td>セーブポイントを作る</td>
+      <td>PCの中だけ</td>
+      <td>変更を記録したいとき</td>
+    </tr>
+    <tr>
+      <td><code>git push</code></td>
+      <td>commit をアップロード</td>
+      <td>PC → GitHub</td>
+      <td>変更を共有・バックアップしたいとき</td>
+    </tr>
+    <tr>
+      <td><code>git pull</code></td>
+      <td>最新をダウンロード</td>
+      <td>GitHub → PC</td>
+      <td>他の人の変更を取り込みたいとき</td>
+    </tr>
+  </table>
+
+  <h3>チーム開発での流れ</h3>
+  <p>実際のチーム開発では、push と pull を交互に繰り返してコードを共有します。</p>
+
+  <div class="diagram">【チーム開発の例：AさんとBさん】
+
+  Aさん: コードを書く → commit → push（GitHubにアップ）
+                                    │
+                                    ▼
+  Bさん:                          pull（最新を取得）→ コードを書く → commit → push
+                                                                              │
+                                                                              ▼
+  Aさん:                                                                    pull（最新を取得）→ …
+
+  こうやって交互に push / pull しながら開発を進めます</div>
+
+  <h3>よくあるミスと対処法</h3>
+
+  <div class="warn">
+    <strong>ミス1: push する前に pull を忘れた</strong><br>
+    他の人が先に push していた場合、自分の push が拒否されます。<br>
+    → まず <code>git pull</code> してから <code>git push</code> すればOK。
+  </div>
+
+  <div class="warn">
+    <strong>ミス2: pull したら自分の変更と衝突（コンフリクト）した</strong><br>
+    同じ行を別の人が変更していた場合に起きます。<br>
+    → ファイルの中に「どっちの変更を使う？」という印が付くので、手動で選んでから commit します。<br>
+    （最初のうちは起きにくいので、頭の片隅に置いておくだけでOK）
+  </div>
+
+  <div class="point">
+    <strong>日常の作業ルーティン：</strong><br><br>
+    <code>git pull</code>　　　　　← 作業開始前に最新を取得<br>
+    　↓<br>
+    ファイルを編集<br>
+    　↓<br>
+    <code>git add ファイル名</code><br>
+    　↓<br>
+    <code>git commit -m "説明"</code><br>
+    　↓<br>
+    <code>git push</code>　　　　　← 作業が終わったらアップ
+  </div>
+</div>
+
+<!-- ==================== 8. よくある質問 ==================== -->
+<div class="section" id="sec8">
+  <h2>8. よくある質問</h2>
 
   <h3>Q: add と commit を毎回やるのは面倒。まとめてできない？</h3>
   <p>A: できます。でも分けたほうが安全です。</p>
@@ -597,9 +749,9 @@ git push</code></pre>
   <p>A: 個人プロジェクトなら日本語でOKです。チーム開発やオープンソースでは英語が一般的です。</p>
 </div>
 
-<!-- ==================== 8. 用語集 ==================== -->
-<div class="section" id="sec8">
-  <h2>8. 用語集</h2>
+<!-- ==================== 9. 用語集 ==================== -->
+<div class="section" id="sec9">
+  <h2>9. 用語集</h2>
   <table>
     <tr><th>用語</th><th>読み方</th><th>意味</th></tr>
     <tr><td>リポジトリ (repository)</td><td>リポジトリ</td><td>プロジェクトフォルダ＋変更履歴のセット</td></tr>
@@ -632,6 +784,9 @@ git push</code></pre>
 
 【毎日の作業（このサイクルを繰り返す）】
 
+  git pull                 ← まず最新を取得する
+       │
+       ▼
   ファイルを編集
        │
        ▼
