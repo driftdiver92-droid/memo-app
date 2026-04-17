@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub 入門ガイド — 初心者のための完全解説</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+      line-height: 1.8;
+      color: #333;
+      background: #f8f9fa;
+      padding: 0 20px 60px;
+    }
+
+    header {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 40px 0 20px;
+      border-bottom: 3px solid #2c3e50;
+    }
+    header h1 { font-size: 28px; color: #2c3e50; }
+    header p { color: #666; margin-top: 8px; font-size: 14px; }
+
+    .toc {
+      max-width: 820px;
+      margin: 30px auto;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 24px 32px;
+    }
+    .toc h2 { font-size: 18px; margin-bottom: 12px; color: #2c3e50; }
+    .toc ol { padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: #3498db; text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section {
+      max-width: 820px;
+      margin: 30px auto;
+      background: #fff;
+      border-radius: 8px;
+      padding: 32px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .section h2 {
+      font-size: 22px;
+      color: #2c3e50;
+      border-left: 4px solid #3498db;
+      padding-left: 12px;
+      margin-bottom: 20px;
+    }
+    .section h3 {
+      font-size: 17px;
+      color: #2c3e50;
+      margin: 24px 0 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #eee;
+    }
+    .section p { margin-bottom: 14px; }
+
+    pre {
+      background: #2c3e50;
+      color: #ecf0f1;
+      padding: 16px 20px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 12px 0 16px;
+    }
+    code {
+      background: #eef;
+      color: #c0392b;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 14px;
+    }
+    pre code {
+      background: none;
+      color: inherit;
+      padding: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 16px;
+      font-size: 14px;
+    }
+    th {
+      background: #2c3e50;
+      color: #fff;
+      padding: 10px 14px;
+      text-align: left;
+    }
+    td {
+      border: 1px solid #ddd;
+      padding: 10px 14px;
+    }
+    tr:nth-child(even) { background: #f9f9f9; }
+
+    .diagram {
+      background: #fefefe;
+      border: 2px solid #3498db;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 16px 0;
+      font-family: monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    .point {
+      background: #eaf6ff;
+      border-left: 4px solid #3498db;
+      padding: 14px 18px;
+      margin: 14px 0;
+      border-radius: 0 6px 6px 0;
+    }
+    .point strong { color: #2c3e50; }
+
+    .warn {
+      background: #fff8e1;
+      border-left: 4px solid #f39c12;
+      padding: 14px 18px;
+      margin: 14px 0;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .compare {
+      display: flex;
+      gap: 16px;
+      margin: 12px 0 16px;
+    }
+    .compare > div {
+      flex: 1;
+      padding: 16px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .compare .bad { background: #fdecea; border: 1px solid #e74c3c; }
+    .compare .good { background: #e8f5e9; border: 1px solid #27ae60; }
+    .compare h4 { margin-bottom: 8px; }
+
+    .step-num {
+      display: inline-block;
+      background: #3498db;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      line-height: 32px;
+      text-align: center;
+      border-radius: 50%;
+      font-weight: bold;
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>GitHub 入門ガイド — 初心者のための完全解説</h1>
+  <p>作成日: 2026年4月17日 ｜ 実際に行った操作をもとに作成</p>
+</header>
+
+<!-- ==================== 目次 ==================== -->
+<div class="toc">
+  <h2>目次</h2>
+  <ol>
+    <li><a href="#sec1">Git と GitHub とは？</a></li>
+    <li><a href="#sec2">全体の流れ（地図）</a></li>
+    <li><a href="#sec3">事前準備でやったこと</a></li>
+    <li><a href="#sec4">実際の操作と解説</a></li>
+    <li><a href="#sec5">今後よく使うコマンド一覧</a></li>
+    <li><a href="#sec6">よくある質問</a></li>
+    <li><a href="#sec7">用語集</a></li>
+  </ol>
+</div>
+
+<!-- ==================== 1. Git と GitHub とは？ ==================== -->
+<div class="section" id="sec1">
+  <h2>1. Git と GitHub とは？</h2>
+
+  <h3>Git（ギット）</h3>
+  <p><strong>ファイルの「変更履歴」を記録するしくみ。</strong></p>
+  <p>
+    たとえば、レポートを書いていて「さっきの方がよかった…」と思ったことはありませんか？<br>
+    Git を使うと、好きなタイミングで「セーブポイント」を作れます。<br>
+    いつでも過去の状態に戻せるので、安心してコードを変更できます。
+  </p>
+
+  <div class="compare">
+    <div class="bad">
+      <h4>普通のファイル管理</h4>
+      レポート_v1.docx<br>
+      レポート_v2.docx<br>
+      レポート_最終版.docx<br>
+      レポート_本当の最終版.docx<br>
+      → ごちゃごちゃ…
+    </div>
+    <div class="good">
+      <h4>Git を使った管理</h4>
+      レポート.docx<br>
+      ├ セーブ1: 「下書き完成」<br>
+      ├ セーブ2: 「図を追加」<br>
+      ├ セーブ3: 「FB反映」<br>
+      └ セーブ4: 「最終確認OK」<br>
+      → スッキリ！
+    </div>
+  </div>
+
+  <h3>GitHub（ギットハブ）</h3>
+  <p><strong>Git で管理したファイルを、インターネット上に保存・共有できるサービス。</strong></p>
+  <p>Git だけだと、履歴はあなたのPCの中だけにあります。GitHub にアップすると：</p>
+  <ul style="margin: 0 0 16px 20px;">
+    <li>PCが壊れてもコードが残る（<strong>バックアップ</strong>）</li>
+    <li>他の人にコードを見せられる（<strong>共有</strong>）</li>
+    <li>チームで一緒に開発できる（<strong>共同作業</strong>）</li>
+  </ul>
+
+  <div class="diagram">┌─────────────┐              ┌─────────────────┐
+│  あなたのPC   │  ── push ──→ │  GitHub（雲の上）  │
+│  （ローカル）  │  ←── pull ── │  （リモート）      │
+└─────────────┘              └─────────────────┘
+     Git で管理                インターネット上に保存</div>
+</div>
+
+<!-- ==================== 2. 全体の流れ ==================== -->
+<div class="section" id="sec2">
+  <h2>2. 全体の流れ（地図）</h2>
+  <p>今回やったことの全体像です。番号順に進めました。</p>
+
+  <div class="diagram">【事前準備】（1回だけやればOK）
+  ① Git の初期設定（名前・メールアドレス）
+  ② GitHub CLI のインストール
+  ③ GitHub へのログイン
+
+【プロジェクト開始】（プロジェクトごとに1回）
+  ④ git init — フォルダを Git リポジトリにする
+  ⑤ gh repo create — GitHub にリポジトリを作る
+
+【日常の作業】（何度も繰り返す）
+  ⑥ ファイルを作成・編集する
+  ⑦ git add — 記録したいファイルを選ぶ
+  ⑧ git commit — セーブポイントを作る
+  ⑨ git push — GitHub にアップする</div>
+</div>
+
+<!-- ==================== 3. 事前準備 ==================== -->
+<div class="section" id="sec3">
+  <h2>3. 事前準備でやったこと</h2>
+
+  <h3><span class="step-num">①</span>Git の初期設定</h3>
+  <pre><code>git config --global user.name "driftdiver92-droid"
+git config --global user.email "driftdiver92@gmail.com"</code></pre>
+
+  <div class="point">
+    <strong>なぜ必要？</strong><br>
+    Git は「誰が」変更したかを記録します。
+    名前とメールアドレスを設定しておくと、
+    すべてのセーブポイント（コミット）に「この人が変更した」と記録されます。
+  </div>
+
+  <div class="point">
+    <strong>--global とは？</strong><br>
+    このPCのすべてのプロジェクトに適用される設定という意味です。
+    1回設定すれば、もうやり直す必要はありません。
+  </div>
+
+  <h3><span class="step-num">②</span>GitHub CLI（gh）のインストール</h3>
+  <pre><code>sudo apt install gh -y</code></pre>
+
+  <table>
+    <tr><th>単語</th><th>意味</th></tr>
+    <tr><td><code>sudo</code></td><td>管理者権限で実行する（PCのパスワードが必要）</td></tr>
+    <tr><td><code>apt</code></td><td>Ubuntu/Linux のソフトインストールツール</td></tr>
+    <tr><td><code>install</code></td><td>インストールする</td></tr>
+    <tr><td><code>gh</code></td><td>GitHub CLI（ターミナルから GitHub を操作するツール）</td></tr>
+    <tr><td><code>-y</code></td><td>「本当にインストールする？」の確認を自動で「はい」にする</td></tr>
+  </table>
+
+  <h3><span class="step-num">③</span>GitHub へのログイン</h3>
+  <pre><code>gh auth login</code></pre>
+  <p>ブラウザが開き、GitHub アカウントでログインしました。これで、ターミナルから GitHub にアクセスできるようになりました。</p>
+</div>
+
+<!-- ==================== 4. 実際の操作と解説 ==================== -->
+<div class="section" id="sec4">
+  <h2>4. 実際の操作と解説</h2>
+
+  <h3><span class="step-num">④</span>git init — リポジトリの作成</h3>
+  <pre><code>git init</code></pre>
+  <p>フォルダの中に <code>.git</code> という隠しフォルダを作りました。ここに変更履歴がすべて保存されます。</p>
+
+  <div class="diagram">Git Hub-TEST/
+├── .git/          ← git init で作られた（履歴の保存場所）
+├── index.html
+├── style.css
+└── app.js</div>
+
+  <div class="point">
+    <strong>たとえると…</strong><br>
+    ノートの1ページ目を開いて「ここに記録していく」と決めた、ということです。
+  </div>
+
+  <pre><code>git branch -m main</code></pre>
+  <p>ブランチの名前を <code>master</code> から <code>main</code> に変更しました。最近は <code>main</code> が世界標準の名前です。</p>
+
+  <div class="point">
+    <strong>ブランチって？</strong><br>
+    「作業の流れ」のこと。今は <code>main</code> という1本だけ。
+    将来チーム開発するときに「枝分かれ」させて使いますが、
+    今は「main = メインの作業場所」とだけ覚えればOKです。
+  </div>
+
+  <!-- ファイル作成 -->
+  <h3><span class="step-num">⑤</span>ファイルの作成</h3>
+  <p>3つのファイルを作りました（メモアプリ本体）：</p>
+  <table>
+    <tr><th>ファイル</th><th>役割</th><th>たとえると</th></tr>
+    <tr><td><code>index.html</code></td><td>画面の骨組み</td><td>家の設計図</td></tr>
+    <tr><td><code>style.css</code></td><td>見た目のデザイン</td><td>壁紙や家具の配置</td></tr>
+    <tr><td><code>app.js</code></td><td>動作のロジック</td><td>電気やスイッチの配線</td></tr>
+  </table>
+
+  <!-- git add -->
+  <h3><span class="step-num">⑥</span>git add — 記録対象を選ぶ</h3>
+  <pre><code>git add index.html style.css app.js</code></pre>
+  <p>「この3つのファイルを、次のセーブポイントに含めるよ」と Git に伝えました。</p>
+
+  <div class="point">
+    <strong>なぜ add が必要？</strong><br>
+    Git では、変更したファイルを「自動で全部セーブ」しません。
+    「どのファイルをセーブするか」を自分で選びます。
+  </div>
+
+  <div class="diagram">作業フォルダ          ステージング            セーブポイント
+（変更した場所）   ── add ──→（セーブ待ち）── commit ──→（記録完了！）
+
+ index.html ── add ──→ [index.html]
+ style.css  ── add ──→ [style.css ] ── commit ──→ セーブポイント完成！
+ app.js     ── add ──→ [app.js    ]</div>
+
+  <div class="point">
+    <strong>たとえると…</strong><br>
+    引っ越しのとき、段ボールに入れる荷物を選んでいる段階です。<br>
+    <code>git add</code> = 段ボールに入れる<br>
+    <code>git commit</code> = 段ボールにフタをして「荷物リスト」を書く
+  </div>
+
+  <!-- git commit -->
+  <h3><span class="step-num">⑦</span>git commit — セーブポイントを作る</h3>
+  <pre><code>git commit -m "feat: メモアプリの実装（HTML/CSS/JS）"</code></pre>
+
+  <table>
+    <tr><th>部分</th><th>意味</th></tr>
+    <tr><td><code>git commit</code></td><td>セーブポイントを作るコマンド</td></tr>
+    <tr><td><code>-m "..."</code></td><td>セーブポイントに付ける説明メッセージ</td></tr>
+    <tr><td><code>feat:</code></td><td>「新機能の追加」という種類を表すラベル</td></tr>
+  </table>
+
+  <p><strong>コミットメッセージのラベル（よく使うもの）：</strong></p>
+  <table>
+    <tr><th>ラベル</th><th>意味</th><th>使う場面</th></tr>
+    <tr><td><code>feat:</code></td><td>新しい機能</td><td>機能を追加したとき</td></tr>
+    <tr><td><code>fix:</code></td><td>バグ修正</td><td>不具合を直したとき</td></tr>
+    <tr><td><code>docs:</code></td><td>ドキュメント</td><td>説明文やREADMEを変えたとき</td></tr>
+    <tr><td><code>refactor:</code></td><td>リファクタリング</td><td>動作は変えずコードを整理したとき</td></tr>
+    <tr><td><code>test:</code></td><td>テスト</td><td>テストを追加・修正したとき</td></tr>
+  </table>
+
+  <p><strong>今回の履歴：</strong></p>
+  <pre><code>git log --oneline の結果：
+
+5403d8a feat: メモアプリの実装（HTML/CSS/JS）    ← 2回目のセーブ
+ad2e715 初回コミット: READMEを追加                ← 1回目のセーブ</code></pre>
+  <p>左の <code>5403d8a</code> はセーブポイントのID（自動生成）。過去に戻りたいときに、このIDを使います。</p>
+
+  <!-- gh repo create -->
+  <h3><span class="step-num">⑧</span>gh repo create — GitHub にリポジトリを作成</h3>
+  <pre><code>gh repo create memo-app --public --source=. --push \
+  --description "初心者向けメモWebアプリ（HTML/CSS/JS）"</code></pre>
+
+  <p>GitHub にリポジトリを作り、コードをアップしました（1コマンドで全部やった）。</p>
+
+  <table>
+    <tr><th>オプション</th><th>意味</th></tr>
+    <tr><td><code>memo-app</code></td><td>リポジトリの名前</td></tr>
+    <tr><td><code>--public</code></td><td>誰でも見られる公開リポジトリにする</td></tr>
+    <tr><td><code>--source=.</code></td><td>今いるフォルダ（<code>.</code>）をアップロード元にする</td></tr>
+    <tr><td><code>--push</code></td><td>作成と同時にコードをアップする</td></tr>
+    <tr><td><code>--description "..."</code></td><td>リポジトリの説明文</td></tr>
+  </table>
+
+  <div class="point">
+    <strong>補足：</strong><code>--private</code> にすると非公開（自分だけ見られる）リポジトリになります。
+  </div>
+
+  <!-- git push -->
+  <h3><span class="step-num">⑨</span>git push — GitHub にアップする</h3>
+  <pre><code>git push</code></pre>
+
+  <p>PCにあるセーブポイント（コミット）を、GitHub にアップロードしました。</p>
+
+  <div class="diagram">  あなたのPC                           GitHub
+┌──────────────┐                ┌──────────────┐
+│ セーブ1: README │ ── push ──→  │ セーブ1: README │
+│ セーブ2: アプリ  │               │ セーブ2: アプリ  │
+└──────────────┘                └──────────────┘</div>
+
+  <div class="point">
+    <strong>push と commit の違い：</strong><br><br>
+    <table>
+      <tr><th>コマンド</th><th>やること</th><th>どこに保存？</th></tr>
+      <tr><td><code>git commit</code></td><td>セーブポイントを作る</td><td>あなたのPCの中だけ</td></tr>
+      <tr><td><code>git push</code></td><td>セーブポイントをアップ</td><td>GitHub（インターネット上）</td></tr>
+    </table>
+    <code>commit</code> だけでは GitHub には反映されません。<code>push</code> して初めて GitHub に反映されます。
+  </div>
+</div>
+
+<!-- ==================== 5. よく使うコマンド ==================== -->
+<div class="section" id="sec5">
+  <h2>5. 今後よく使うコマンド一覧</h2>
+
+  <h3>毎日使うコマンド（3つだけ覚えればOK）</h3>
+  <pre><code># 1. 変更したファイルを選ぶ
+git add ファイル名
+
+# 2. セーブポイントを作る
+git commit -m "変更内容の説明"
+
+# 3. GitHub にアップする
+git push</code></pre>
+
+  <h3>状況を確認するコマンド</h3>
+  <pre><code># 今の状態を見る（何が変更されたか）
+git status
+
+# セーブポイントの履歴を見る
+git log --oneline
+
+# 前回のセーブから何が変わったか見る
+git diff</code></pre>
+
+  <h3>git status の読み方</h3>
+  <pre><code>$ git status
+
+ブランチ main
+
+Changes not staged for commit:     ← 変更したけど add してないファイル
+    modified:   app.js
+
+Untracked files:                   ← 新しく作ったけど Git が知らないファイル
+    newfile.txt
+
+nothing to commit                  ← 全部セーブ済み。何もすることなし！</code></pre>
+</div>
+
+<!-- ==================== 6. よくある質問 ==================== -->
+<div class="section" id="sec6">
+  <h2>6. よくある質問</h2>
+
+  <h3>Q: add と commit を毎回やるのは面倒。まとめてできない？</h3>
+  <p>A: できます。でも分けたほうが安全です。</p>
+  <pre><code># 全ファイルを一括で add + commit する方法
+git add -A && git commit -m "メッセージ"</code></pre>
+  <div class="warn">
+    <strong>注意：</strong><code>-A</code> は全ファイルを対象にするので、
+    間違えてパスワードファイルなどをアップしてしまう危険があります。
+    慣れるまではファイル名を指定する方法がおすすめです。
+  </div>
+
+  <h3>Q: 間違えて commit したら取り消せる？</h3>
+  <p>A: 直前の commit なら取り消せます。</p>
+  <pre><code># 直前の commit を取り消す（ファイルの変更は残る）
+git reset --soft HEAD~1</code></pre>
+
+  <h3>Q: push した後に間違いに気づいたら？</h3>
+  <p>A: 新しい commit で修正するのが安全です。</p>
+  <pre><code># 間違いを修正して…
+git add 修正したファイル
+git commit -m "fix: ○○を修正"
+git push</code></pre>
+
+  <h3>Q: commit メッセージは日本語でいい？</h3>
+  <p>A: 個人プロジェクトなら日本語でOKです。チーム開発やオープンソースでは英語が一般的です。</p>
+</div>
+
+<!-- ==================== 7. 用語集 ==================== -->
+<div class="section" id="sec7">
+  <h2>7. 用語集</h2>
+  <table>
+    <tr><th>用語</th><th>読み方</th><th>意味</th></tr>
+    <tr><td>リポジトリ (repository)</td><td>リポジトリ</td><td>プロジェクトフォルダ＋変更履歴のセット</td></tr>
+    <tr><td>コミット (commit)</td><td>コミット</td><td>セーブポイントを作ること／作ったもの</td></tr>
+    <tr><td>プッシュ (push)</td><td>プッシュ</td><td>ローカルの変更を GitHub にアップすること</td></tr>
+    <tr><td>プル (pull)</td><td>プル</td><td>GitHub の変更をローカルにダウンロードすること</td></tr>
+    <tr><td>クローン (clone)</td><td>クローン</td><td>GitHub のリポジトリをまるごとダウンロードすること</td></tr>
+    <tr><td>ブランチ (branch)</td><td>ブランチ</td><td>作業の流れ。枝分かれさせて並行作業できる</td></tr>
+    <tr><td>マージ (merge)</td><td>マージ</td><td>枝分かれしたブランチを1つに統合すること</td></tr>
+    <tr><td>ステージング (staging)</td><td>ステージング</td><td>git add した状態。commit 待ちの控え室</td></tr>
+    <tr><td>リモート (remote)</td><td>リモート</td><td>GitHub など、インターネット上のリポジトリ</td></tr>
+    <tr><td>ローカル (local)</td><td>ローカル</td><td>あなたのPC上のリポジトリ</td></tr>
+    <tr><td>diff</td><td>ディフ</td><td>変更前と変更後の差分（違い）</td></tr>
+    <tr><td>HEAD</td><td>ヘッド</td><td>今いるセーブポイント（最新の commit）を指す</td></tr>
+  </table>
+</div>
+
+<!-- ==================== まとめ ==================== -->
+<div class="section">
+  <h2>まとめ：今日の操作を1枚の図で</h2>
+  <div class="diagram">【1回だけの準備】
+  git config --global user.name "名前"
+  git config --global user.email "メール"
+  gh auth login
+
+【プロジェクト開始】
+  git init
+  gh repo create リポジトリ名 --public --source=. --push
+
+【毎日の作業（このサイクルを繰り返す）】
+
+  ファイルを編集
+       │
+       ▼
+  git add ファイル名       ← セーブしたいファイルを選ぶ
+       │
+       ▼
+  git commit -m "説明"     ← セーブポイントを作る（PCに記録）
+       │
+       ▼
+  git push                 ← GitHub にアップする
+       │
+       ▼
+  GitHub に反映！</div>
+</div>
+
+</body>
+</html>
