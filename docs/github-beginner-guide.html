@@ -179,8 +179,9 @@
     <li><a href="#sec5">今後よく使うコマンド一覧</a></li>
     <li><a href="#sec6">GitHub Pages — HTMLをWebページとして公開する</a></li>
     <li><a href="#sec7">push と pull — GitHubとの同期を理解する</a></li>
-    <li><a href="#sec8">よくある質問</a></li>
-    <li><a href="#sec9">用語集</a></li>
+    <li><a href="#sec8">clone と再開 — 作業を別の場所から続ける</a></li>
+    <li><a href="#sec9">よくある質問</a></li>
+    <li><a href="#sec10">用語集</a></li>
   </ol>
 </div>
 
@@ -719,9 +720,99 @@ git push</code></pre>
   </div>
 </div>
 
-<!-- ==================== 8. よくある質問 ==================== -->
+<!-- ==================== 8. clone と再開 ==================== -->
 <div class="section" id="sec8">
-  <h2>8. よくある質問</h2>
+  <h2>8. clone と再開 — 作業を別の場所から続ける</h2>
+
+  <h3>2つの再開パターン</h3>
+  <p>作業を中断して、また後で再開したい場合は<strong>2つのパターン</strong>があります。</p>
+
+  <table>
+    <tr><th>状況</th><th>やること</th></tr>
+    <tr>
+      <td>フォルダがPCに<strong>残っている</strong></td>
+      <td>そのフォルダに移動するだけ</td>
+    </tr>
+    <tr>
+      <td>フォルダが<strong>消えてしまった</strong>（または別のPC）</td>
+      <td><code>git clone</code> でGitHubからダウンロード</td>
+    </tr>
+  </table>
+
+  <h3>パターン1: フォルダが残っている場合</h3>
+  <p>一番簡単です。フォルダに移動するだけ。</p>
+
+  <pre><code># 1. プロジェクトフォルダに移動
+cd ~/ドキュメント/ClaudeWork/projects/Git\ Hub-TEST
+
+# 2. Claude Code を起動（必要な場合）
+claude</code></pre>
+
+  <div class="point">
+    <strong>なぜこれだけでいい？</strong><br>
+    GitHubとの接続情報は <code>.git</code> フォルダの中に保存されています。
+    フォルダが残っていれば接続情報も残っているので、すぐに <code>git push</code> や <code>git pull</code> が使えます。
+  </div>
+
+  <h3>パターン2: フォルダが消えてしまった場合</h3>
+  <p>GitHubにアップ済みなら、<code>git clone</code> で復元できます。</p>
+
+  <pre><code># 1. 作りたい場所に移動
+cd ~/ドキュメント/ClaudeWork/projects
+
+# 2. GitHubからまるごとダウンロード
+git clone https://github.com/driftdiver92-droid/memo-app.git
+
+# 3. ダウンロードされたフォルダに移動
+cd memo-app
+
+# 4. Claude Code を起動（必要な場合）
+claude</code></pre>
+
+  <div class="diagram">git clone がダウンロードするもの：
+
+┌─────────────────────────────────────┐
+│  memo-app/                          │
+│  ├── .git/          ← 変更履歴       │
+│  │   └── (GitHub接続情報も含む)       │
+│  ├── index.html     ← コード        │
+│  ├── style.css      ← コード        │
+│  ├── app.js         ← コード        │
+│  ├── README.md      ← コード        │
+│  └── docs/          ← ドキュメント    │
+│                                     │
+│  → コード + 履歴 + 接続情報 が全部入り！ │
+└─────────────────────────────────────┘</div>
+
+  <div class="point">
+    <strong>clone のURLはどこで確認できる？</strong><br>
+    GitHub のリポジトリページ →「<strong>&lt;&gt; Code</strong>」ボタン（緑色）→ HTTPS のURLをコピーできます。
+  </div>
+
+  <h3>clone と init の違い</h3>
+  <table>
+    <tr><th>コマンド</th><th>使う場面</th><th>やること</th></tr>
+    <tr>
+      <td><code>git init</code></td>
+      <td>新しくプロジェクトを始めるとき</td>
+      <td>空のリポジトリを作る（まだGitHubと繋がっていない）</td>
+    </tr>
+    <tr>
+      <td><code>git clone URL</code></td>
+      <td>既にGitHubにあるプロジェクトをダウンロードするとき</td>
+      <td>コード＋履歴＋GitHub接続情報をまるごとコピー</td>
+    </tr>
+  </table>
+
+  <div class="point">
+    <strong>まとめ：</strong>GitHubにアップ（push）してあるプロジェクトは、いつでも・どこからでも <code>git clone</code> で復元できます。
+    だから push は「バックアップ」の役割も持っています。
+  </div>
+</div>
+
+<!-- ==================== 9. よくある質問 ==================== -->
+<div class="section" id="sec9">
+  <h2>9. よくある質問</h2>
 
   <h3>Q: add と commit を毎回やるのは面倒。まとめてできない？</h3>
   <p>A: できます。でも分けたほうが安全です。</p>
@@ -749,9 +840,9 @@ git push</code></pre>
   <p>A: 個人プロジェクトなら日本語でOKです。チーム開発やオープンソースでは英語が一般的です。</p>
 </div>
 
-<!-- ==================== 9. 用語集 ==================== -->
-<div class="section" id="sec9">
-  <h2>9. 用語集</h2>
+<!-- ==================== 10. 用語集 ==================== -->
+<div class="section" id="sec10">
+  <h2>10. 用語集</h2>
   <table>
     <tr><th>用語</th><th>読み方</th><th>意味</th></tr>
     <tr><td>リポジトリ (repository)</td><td>リポジトリ</td><td>プロジェクトフォルダ＋変更履歴のセット</td></tr>
